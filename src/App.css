@@ -1,0 +1,280 @@
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #121212;
+  color: #fafafa;
+}
+
+.App {
+  min-height: 100vh;
+  background-color: #121212;
+}
+
+/* Color Variables */
+:root {
+  --twitter-blue: #00c2ff;
+  /* Query Cyan */
+  --twitter-blue-dark: #3a86ff;
+  /* Result Blue */
+  --text-primary: #fafafa;
+  /* Insight White */
+  --text-secondary: #aab8c2;
+  /* Dimmed White */
+  --border-color: #2f3336;
+  /* Dark Gray */
+  --hover-bg: #1c1f23;
+  /* Darker Gray */
+  --card-bg: #121212;
+  /* Dark Mode Black */
+  --success-color: #00c2ff;
+  /* Cyan as Success/Primary */
+  --warning-color: #f9c74f;
+  /* Source Yellow */
+  --danger-color: #ff6f59;
+  /* Answer Coral */
+}
+
+/* Utility Classes */
+.container-fluid {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-wrapper {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.scrollable {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.scrollable::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollable::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollable::-webkit-scrollbar-thumb {
+  background: #333639;
+  border-radius: 4px;
+}
+
+.scrollable::-webkit-scrollbar-thumb:hover {
+  background: #536471;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.3s ease-out;
+}
+
+.slide-in-right {
+  animation: slideInRight 0.3s ease-out;
+}
+
+.spinner {
+  display: inline-block;
+  animation: spin 1s linear infinite;
+}
+
+.pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Buttons */
+button {
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 24px;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.btn-primary {
+  background-color: var(--twitter-blue);
+  color: #121212;
+  /* Black text on Cyan */
+  padding: 12px 24px;
+}
+
+.btn-primary:hover {
+  background-color: var(--twitter-blue-dark);
+  box-shadow: 0 0 20px rgba(0, 194, 255, 0.3);
+  color: white;
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--twitter-blue);
+  border: 2px solid var(--twitter-blue);
+  padding: 10px 22px;
+}
+
+.btn-secondary:hover {
+  background-color: rgba(0, 194, 255, 0.1);
+}
+
+.btn-small {
+  padding: 8px 16px;
+  font-size: 13px;
+}
+
+.btn-danger {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #e64a19;
+}
+
+.btn-success {
+  background-color: var(--success-color);
+  color: #121212;
+}
+
+.btn-success:hover {
+  background-color: #0091ea;
+}
+
+/* Cards */
+.card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 16px;
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  border-color: var(--twitter-blue);
+  box-shadow: 0 2px 8px rgba(0, 194, 255, 0.15);
+}
+
+.card-elevated {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* Badge */
+.badge {
+  display: inline-block;
+  background-color: var(--twitter-blue);
+  color: #121212;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+.badge-success {
+  background-color: var(--success-color);
+}
+
+.badge-warning {
+  background-color: var(--warning-color);
+}
+
+.badge-danger {
+  background-color: var(--danger-color);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .dashboard-wrapper {
+    flex-direction: column;
+  }
+
+  .panel {
+    min-height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .panel {
+    min-width: 100%;
+  }
+}

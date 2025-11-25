@@ -39,62 +39,64 @@ function Settings() {
 
     return (
         <div className="settings-page">
-            <h2>⚙️ Settings</h2>
+            <div className="settings-content">
+                <h2>⚙️ Settings</h2>
 
-            <section className="settings-section">
-                <h3>Connected Accounts</h3>
-                <p>Manage your linked social media accounts.</p>
+                <section className="settings-section">
+                    <h3>Connected Accounts</h3>
+                    <p>Manage your linked social media accounts.</p>
 
-                <div className="accounts-list">
-                    {/* Twitter Account */}
-                    <div className="account-item">
-                        <div className="account-info">
-                            <span className="account-icon">🐦</span>
-                            <div>
-                                <h4>Twitter</h4>
-                                <p>{twitterUser ? `Connected as @${twitterUser}` : 'Not connected'}</p>
+                    <div className="accounts-list">
+                        {/* Twitter Account */}
+                        <div className="account-item">
+                            <div className="account-info">
+                                <span className="account-icon">🐦</span>
+                                <div>
+                                    <h4>Twitter</h4>
+                                    <p>{twitterUser ? `Connected as @${twitterUser}` : 'Not connected'}</p>
+                                </div>
                             </div>
+                            {twitterUser ? (
+                                <button className="btn-disconnect" onClick={() => handleLogout('twitter')}>
+                                    Disconnect
+                                </button>
+                            ) : (
+                                <button className="btn-connect twitter" onClick={() => handleLogin('twitter')}>
+                                    Connect Twitter
+                                </button>
+                            )}
                         </div>
-                        {twitterUser ? (
-                            <button className="btn-disconnect" onClick={() => handleLogout('twitter')}>
-                                Disconnect
-                            </button>
-                        ) : (
-                            <button className="btn-connect twitter" onClick={() => handleLogin('twitter')}>
-                                Connect Twitter
-                            </button>
-                        )}
-                    </div>
 
-                    {/* LinkedIn Account */}
-                    <div className="account-item">
-                        <div className="account-info">
-                            <span className="account-icon">💼</span>
-                            <div>
-                                <h4>LinkedIn</h4>
-                                <p>{linkedinUser ? `Connected as ${linkedinUser}` : 'Not connected'}</p>
+                        {/* LinkedIn Account */}
+                        <div className="account-item">
+                            <div className="account-info">
+                                <span className="account-icon">💼</span>
+                                <div>
+                                    <h4>LinkedIn</h4>
+                                    <p>{linkedinUser ? `Connected as ${linkedinUser}` : 'Not connected'}</p>
+                                </div>
                             </div>
+                            {linkedinUser ? (
+                                <button className="btn-disconnect" onClick={() => handleLogout('linkedin')}>
+                                    Disconnect
+                                </button>
+                            ) : (
+                                <button className="btn-connect linkedin" onClick={() => handleLogin('linkedin')}>
+                                    Connect LinkedIn
+                                </button>
+                            )}
                         </div>
-                        {linkedinUser ? (
-                            <button className="btn-disconnect" onClick={() => handleLogout('linkedin')}>
-                                Disconnect
-                            </button>
-                        ) : (
-                            <button className="btn-connect linkedin" onClick={() => handleLogin('linkedin')}>
-                                Connect LinkedIn
-                            </button>
-                        )}
                     </div>
-                </div>
-            </section>
+                </section>
 
-            <section className="settings-section">
-                <h3>Preferences</h3>
-                <p>Adjust theme, notification preferences, and AI tone settings.</p>
-                <div className="preferences-placeholder">
-                    <p>More settings coming soon...</p>
-                </div>
-            </section>
+                <section className="settings-section">
+                    <h3>Preferences</h3>
+                    <p>Adjust theme, notification preferences, and AI tone settings.</p>
+                    <div className="preferences-placeholder">
+                        <p>More settings coming soon...</p>
+                    </div>
+                </section>
+            </div>
         </div>
     );
 }

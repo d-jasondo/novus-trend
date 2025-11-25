@@ -65,13 +65,24 @@ function Dashboard() {
 
   const handleTweetPost = async (tweet) => {
     try {
-      // Get real access token from localStorage
-      const tokensData = localStorage.getItem('twitterTokens');
-      if (!tokensData) {
-        alert('Please sign in with Twitter first!');
-        return;
+      const platform = tweet.platform || 'twitter';
+      let accessToken;
+
+      if (platform === 'linkedin') {
+        const tokensData = localStorage.getItem('linkedinTokens');
+        if (!tokensData) {
+          alert('Please sign in with LinkedIn first!');
+          return;
+        }
+        accessToken = JSON.parse(tokensData).accessToken;
+      } else {
+        const tokensData = localStorage.getItem('twitterTokens');
+        if (!tokensData) {
+          alert('Please sign in with Twitter first!');
+          return;
+        }
+        accessToken = JSON.parse(tokensData).accessToken;
       }
-      const { accessToken } = JSON.parse(tokensData);
 
       // Convert media files to base64 if present
       let mediaData = [];
@@ -89,8 +100,10 @@ function Dashboard() {
         }
       }
 
-      // Post to backend with real token and media
-      const res = await axios.post(`${API_BASE}/tweets/post`, {
+      // Post to backend based on platform
+      const endpoint = platform === 'linkedin' ? `${API_BASE}/linkedin/post` : `${API_BASE}/tweets/post`;
+
+      const res = await axios.post(endpoint, {
         text: tweet.content,
         accessToken,
         media: mediaData
@@ -101,6 +114,7 @@ function Dashboard() {
         content: tweet.content,
         hashtags: tweet.hashtags,
         timestamp: new Date(),
+        platform: platform, // Store platform
         engagements: {
           likes: 0,
           retweets: 0,
@@ -109,11 +123,11 @@ function Dashboard() {
         status: 'posted',
       };
       setPostedTweets([newTweet, ...postedTweets]);
-      alert('Tweet posted successfully!');
+      alert(`${platform === 'linkedin' ? 'LinkedIn post' : 'Tweet'} posted successfully!`);
 
     } catch (err) {
       console.error('Post failed', err);
-      alert(`Failed to post tweet: ${err.response?.data?.error || err.message}`);
+      alert(`Failed to post: ${err.response?.data?.error || err.message}`);
     }
   };
 

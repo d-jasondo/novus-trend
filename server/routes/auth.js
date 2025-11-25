@@ -42,8 +42,8 @@ router.get('/login', async (req, res) => {
     logDebug('Stored verifier for state:', state);
 
     logDebug('Redirecting to Twitter OAuth URL', url);
-    // Append prompt=login to force account selection (standard OAuth2)
-    res.redirect(url + '&prompt=login');
+    // Append force_login=true to always show account selection
+    res.redirect(url + '&force_login=true');
   } catch (err) {
     logDebug('Login error', err.message);
     const msg = process.env.NODE_ENV === 'production' ? 'OAuth login failed' : `OAuth login failed: ${err?.message || err}`;

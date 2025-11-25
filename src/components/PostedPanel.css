@@ -6,91 +6,101 @@
 
 .tabs-bar {
   display: flex;
-  border-bottom: 1px solid #eff3f4;
-  background-color: var(--hover-bg);
+  border-bottom: 1px solid var(--border-color);
+  background: linear-gradient(90deg, rgba(0, 229, 255, 0.02), rgba(139, 92, 246, 0.02));
   padding: 0 12px;
 }
 
 .tab-button {
   flex: 1;
-  padding: 12px 16px;
+  padding: 14px 16px;
   background: transparent;
   border: none;
   color: var(--text-secondary);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   border-bottom: 3px solid transparent;
   position: relative;
 }
 
 .tab-button:hover {
-  color: var(--twitter-blue);
+  color: var(--primary-cyan);
 }
 
 .tab-button.active {
-  color: var(--twitter-blue);
-  border-bottom-color: var(--twitter-blue);
+  color: var(--primary-cyan);
+  border-bottom-color: var(--primary-cyan);
+  box-shadow: 0 -2px 10px rgba(0, 229, 255, 0.3);
 }
 
 .tweets-container {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 
 .tweet-card {
-  padding: 12px;
+  padding: 16px;
   margin-bottom: 0;
   cursor: pointer;
-  transition: all 0.2s ease;
-  background-color: var(--card-bg);
+  transition: all 0.3s ease;
+  background: rgba(21, 27, 61, 0.3);
+  backdrop-filter: blur(5px);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
 }
 
 .tweet-card:hover {
-  background-color: var(--hover-bg);
+  background: rgba(21, 27, 61, 0.5);
+  border-color: var(--primary-cyan);
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
+  transform: translateY(-2px);
 }
 
 .tweet-card.expanded {
-  background-color: rgba(124, 58, 237, 0.05);
-  box-shadow: inset 0 0 0 1px var(--twitter-blue);
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.1), rgba(139, 92, 246, 0.05));
+  border-color: var(--primary-cyan);
+  box-shadow: inset 0 0 0 1px rgba(0, 229, 255, 0.3),
+    0 0 25px rgba(0, 229, 255, 0.3);
 }
 
 .tweet-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .user-mini {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   align-items: flex-start;
 }
 
 .avatar-small {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background-color: var(--twitter-blue);
+  background: var(--gradient-primary);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   flex-shrink: 0;
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
 }
 
 .user-mini p {
   margin: 0;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
 .user-handle {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--text-primary);
 }
@@ -105,57 +115,61 @@
   border: none;
   color: var(--text-secondary);
   cursor: pointer;
-  font-size: 14px;
-  padding: 4px 8px;
-  transition: all 0.2s ease;
+  font-size: 16px;
+  padding: 6px 10px;
+  transition: all 0.3s ease;
   opacity: 0;
+  border-radius: 50%;
 }
 
 .tweet-card:hover .btn-delete {
   opacity: 1;
-  color: #e74c3c;
 }
 
 .btn-delete:hover {
   transform: scale(1.2);
+  color: #FF6B6B;
+  background: rgba(255, 107, 107, 0.1);
+  box-shadow: 0 0 10px rgba(255, 107, 107, 0.3);
 }
 
 .tweet-body {
-  margin: 8px 0;
+  margin: 10px 0;
 }
 
 .tweet-content {
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 15px;
+  line-height: 1.6;
   color: var(--text-primary);
-  margin: 0 0 8px 0;
+  margin: 0 0 10px 0;
   word-wrap: break-word;
 }
 
 .tweet-hashtags {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 6px;
 }
 
 .hashtag-link {
-  color: var(--twitter-blue);
+  color: var(--primary-cyan);
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .hashtag-link:hover {
   text-decoration: underline;
+  text-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
 }
 
 .tweet-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  padding: 8px 0;
-  margin-top: 8px;
+  gap: 12px;
+  padding: 12px 0;
+  margin-top: 12px;
   border-top: 1px solid var(--border-color);
 }
 
@@ -163,32 +177,38 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 4px;
 }
 
 .stat-value {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
-  color: var(--text-primary);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .stat-label {
   font-size: 11px;
   color: var(--text-secondary);
-  text-transform: capitalize;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
 }
 
 .scheduled-info {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px;
-  margin-top: 8px;
-  background-color: rgba(255, 184, 28, 0.1);
-  border-radius: 8px;
+  gap: 8px;
+  padding: 10px 14px;
+  margin-top: 12px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(255, 20, 147, 0.1));
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 12px;
   font-size: 12px;
-  color: #ffb81c;
-  font-weight: 600;
+  color: var(--primary-purple);
+  font-weight: 700;
 }
 
 .clock-icon {
@@ -198,9 +218,9 @@
 .tweet-actions {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  margin-top: 12px;
-  padding-top: 12px;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 14px;
   border-top: 1px solid var(--border-color);
 }
 
@@ -208,21 +228,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  padding: 8px 12px;
-  background-color: rgba(124, 58, 237, 0.1);
-  color: var(--twitter-blue);
-  border: 1px solid rgba(124, 58, 237, 0.2);
-  border-radius: 8px;
+  gap: 6px;
+  padding: 10px 14px;
+  background: transparent;
+  color: var(--primary-cyan);
+  border: 1px solid var(--primary-cyan);
+  border-radius: 12px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .action-btn:hover {
-  background-color: var(--twitter-blue);
+  background: var(--gradient-primary);
   color: white;
+  border-color: transparent;
+  box-shadow: var(--glow-cyan);
+  transform: translateY(-2px);
 }
 
 .empty-state-alt {
@@ -233,28 +256,32 @@
   height: 240px;
   color: var(--text-secondary);
   text-align: center;
-  gap: 8px;
+  gap: 12px;
 }
 
 .empty-icon {
-  font-size: 40px;
+  font-size: 48px;
   margin: 0;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .empty-title {
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 700;
   color: var(--text-primary);
   margin: 0;
 }
 
 .empty-desc {
   font-size: 13px;
-  color: var(--text-secondary);
+  color: var(--text-muted);
   margin: 0;
 }
 
-/* Responsive Design */
+/* Responsive */
 @media (max-width: 1024px) {
   .tweet-actions {
     grid-template-columns: repeat(2, 1fr);
@@ -263,20 +290,19 @@
 
 @media (max-width: 768px) {
   .tweet-card {
-    padding: 10px;
+    padding: 12px;
   }
 
   .tweet-content {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .tweet-stats {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
+    gap: 8px;
   }
 
   .action-btn {
-    padding: 6px 8px;
+    padding: 8px 10px;
     font-size: 11px;
   }
 }

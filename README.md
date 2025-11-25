@@ -1,4 +1,4 @@
-# 🚀 Novice Trend
+# 🚀 Novus Trend
 
 > **"Stop Searching. Start Trending."**
 
@@ -66,8 +66,8 @@ Stunning dark mode with a carefully crafted color palette:
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/novice-trend.git
-cd novice-trend
+git clone https://github.com/yourusername/novus-trend.git
+cd novus-trend
 ```
 
 ### 2. Backend Setup
@@ -143,7 +143,7 @@ Browse trending topics categorized by:
 
 ## 📁 Project Structure
 ```
-novice-trend/
+novus-trend/
 ├── server/                 # Backend (Node.js/Express)
 │   ├── routes/
 │   │   ├── auth.js        # Twitter OAuth 2.0

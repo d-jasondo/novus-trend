@@ -1,61 +1,53 @@
-/* Global Styles */
+/* Novus Trend Global Styles */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+:root {
+  /* Custom Dark Theme Colors */
+  --twitter-blue: #00c2ff;
+  --twitter-blue-dark: #3a86ff;
+  --text-primary: #fafafa;
+  --text-secondary: #aab8c2;
+  --border-color: #2f3336;
+  --hover-bg: #1c1f23;
+  --card-bg: #121212;
+  --success-color: #00c2ff;
+  --warning-color: #f9c74f;
+  --danger-color: #ff6f59;
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #00c2ff, #3a86ff);
+  --glow-cyan: 0 0 20px rgba(0, 194, 255, 0.5);
+
+  /* New Theme Variables */
+  --primary-cyan: #00E5FF;
+  --primary-pink: #FF1493;
+  --primary-purple: #8B5CF6;
+
+  /* Backgrounds */
+  --bg-dark: #0A0E27;
+  --bg-secondary: #151B3D;
+  --bg-card: rgba(21, 27, 61, 0.6);
+}
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   background-color: #121212;
   color: #fafafa;
+  overflow: hidden;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .App {
   min-height: 100vh;
   background-color: #121212;
-}
-
-/* Color Variables */
-:root {
-  --twitter-blue: #00c2ff;
-  /* Query Cyan */
-  --twitter-blue-dark: #3a86ff;
-  /* Result Blue */
-  --text-primary: #fafafa;
-  /* Insight White */
-  --text-secondary: #aab8c2;
-  /* Dimmed White */
-  --border-color: #2f3336;
-  /* Dark Gray */
-  --hover-bg: #1c1f23;
-  /* Darker Gray */
-  --card-bg: #121212;
-  /* Dark Mode Black */
-  --success-color: #00c2ff;
-  /* Cyan as Success/Primary */
-  --warning-color: #f9c74f;
-  /* Source Yellow */
-  --danger-color: #ff6f59;
-  /* Answer Coral */
-}
-
-/* Utility Classes */
-.container-fluid {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.dashboard-wrapper {
-  display: flex;
-  flex: 1;
-  overflow: hidden;
 }
 
 .scrollable {
@@ -72,12 +64,13 @@ body {
 }
 
 .scrollable::-webkit-scrollbar-thumb {
-  background: #333639;
+  background: linear-gradient(180deg, var(--primary-cyan), var(--primary-purple));
   border-radius: 4px;
 }
 
 .scrollable::-webkit-scrollbar-thumb:hover {
-  background: #536471;
+  background: linear-gradient(180deg, var(--primary-pink), var(--primary-purple));
+  box-shadow: var(--glow-cyan);
 }
 
 /* Animations */
@@ -137,6 +130,18 @@ body {
   }
 }
 
+@keyframes glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 5px var(--primary-cyan), 0 0 10px var(--primary-cyan);
+  }
+
+  50% {
+    box-shadow: 0 0 10px var(--primary-cyan), 0 0 20px var(--primary-cyan), 0 0 30px var(--primary-pink);
+  }
+}
+
 .fade-in {
   animation: fadeIn 0.3s ease-in;
 }
@@ -165,36 +170,37 @@ button {
   font-size: 15px;
   font-weight: 600;
   border-radius: 24px;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   outline: none;
 }
 
 .btn-primary {
-  background-color: var(--twitter-blue);
-  color: #121212;
-  /* Black text on Cyan */
+  background: var(--gradient-primary);
+  color: white;
   padding: 12px 24px;
+  box-shadow: 0 4px 15px rgba(0, 229, 255, 0.3);
 }
 
 .btn-primary:hover {
-  background-color: var(--twitter-blue-dark);
-  box-shadow: 0 0 20px rgba(0, 194, 255, 0.3);
-  color: white;
+  transform: translateY(-2px);
+  box-shadow: var(--glow-cyan);
+  animation: glow 2s ease-in-out infinite;
 }
 
 .btn-primary:active {
-  transform: scale(0.98);
+  transform: translateY(0) scale(0.98);
 }
 
 .btn-secondary {
   background-color: transparent;
-  color: var(--twitter-blue);
-  border: 2px solid var(--twitter-blue);
+  color: var(--primary-cyan);
+  border: 2px solid var(--primary-cyan);
   padding: 10px 22px;
 }
 
 .btn-secondary:hover {
-  background-color: rgba(0, 194, 255, 0.1);
+  background: rgba(0, 229, 255, 0.1);
+  box-shadow: var(--glow-cyan);
 }
 
 .btn-small {
@@ -203,78 +209,60 @@ button {
 }
 
 .btn-danger {
-  background-color: var(--danger-color);
+  background: linear-gradient(135deg, #FF6B6B, #EE5A6F);
   color: white;
 }
 
 .btn-danger:hover {
-  background-color: #e64a19;
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
 }
 
 .btn-success {
-  background-color: var(--success-color);
-  color: #121212;
+  background: var(--gradient-primary);
+  color: white;
 }
 
 .btn-success:hover {
-  background-color: #0091ea;
+  transform: translateY(-2px);
+  box-shadow: var(--glow-cyan);
 }
 
 /* Cards */
 .card {
-  background-color: var(--card-bg);
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
   border: 1px solid var(--border-color);
   border-radius: 16px;
   padding: 16px;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .card:hover {
-  border-color: var(--twitter-blue);
-  box-shadow: 0 2px 8px rgba(0, 194, 255, 0.15);
+  border-color: var(--primary-cyan);
+  box-shadow: 0 8px 32px rgba(0, 229, 255, 0.2);
+  transform: translateY(-2px);
 }
 
 .card-elevated {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 1px var(--primary-cyan);
 }
 
 /* Badge */
 .badge {
   display: inline-block;
-  background-color: var(--twitter-blue);
-  color: #121212;
-  padding: 4px 8px;
+  padding: 4px 12px;
   border-radius: 12px;
   font-size: 12px;
   font-weight: 600;
-  margin-right: 4px;
-}
-
-.badge-success {
-  background-color: var(--success-color);
-}
-
-.badge-warning {
-  background-color: var(--warning-color);
+  background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
+  color: white;
 }
 
 .badge-danger {
-  background-color: var(--danger-color);
+  background: linear-gradient(135deg, #FF6B6B, #EE5A6F);
 }
 
-/* Responsive Design */
-@media (max-width: 1200px) {
-  .dashboard-wrapper {
-    flex-direction: column;
-  }
-
-  .panel {
-    min-height: 300px;
-  }
-}
-
-@media (max-width: 768px) {
-  .panel {
-    min-width: 100%;
-  }
+.badge-success {
+  background: linear-gradient(135deg, #00c2ff, #3a86ff);
 }

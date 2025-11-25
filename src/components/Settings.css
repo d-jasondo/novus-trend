@@ -1,0 +1,256 @@
+.settings-page {
+    padding: 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+    animation: fadeIn 0.5s ease-in-out;
+    overflow-y: auto;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.settings-page h2 {
+    font-size: 36px;
+    font-weight: 800;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 40px;
+    letter-spacing: -0.5px;
+}
+
+.settings-section {
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 32px;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.settings-section:hover {
+    border-color: rgba(168, 85, 247, 0.3);
+    box-shadow: 0 12px 48px rgba(168, 85, 247, 0.15);
+    transform: translateY(-2px);
+}
+
+.settings-section h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.settings-section>p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+
+/* Account Cards */
+.accounts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.account-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.05), rgba(236, 72, 153, 0.05));
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.account-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(236, 72, 153, 0.1));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 0;
+}
+
+.account-item:hover::before {
+    opacity: 1;
+}
+
+.account-item:hover {
+    border-color: rgba(168, 85, 247, 0.4);
+    box-shadow: 0 8px 24px rgba(168, 85, 247, 0.2);
+    transform: translateX(4px);
+}
+
+.account-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    z-index: 1;
+}
+
+.account-icon {
+    font-size: 36px;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(236, 72, 153, 0.1));
+    border: 2px solid rgba(168, 85, 247, 0.3);
+    border-radius: 14px;
+    transition: all 0.3s ease;
+}
+
+.account-item:hover .account-icon {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 4px 16px rgba(168, 85, 247, 0.3);
+}
+
+.account-info>div h4 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 4px 0;
+}
+
+.account-info>div p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* Buttons */
+.btn-connect,
+.btn-disconnect {
+    padding: 10px 24px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    z-index: 1;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-connect {
+    background: linear-gradient(135deg, #a855f7, #ec4899);
+    color: white;
+}
+
+.btn-connect:hover {
+    background: linear-gradient(135deg, #9333ea, #db2777);
+    box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4);
+    transform: translateY(-2px);
+}
+
+.btn-connect:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(168, 85, 247, 0.3);
+}
+
+.btn-connect.twitter {
+    background: linear-gradient(135deg, #1da1f2, #0c85d0);
+}
+
+.btn-connect.twitter:hover {
+    background: linear-gradient(135deg, #0c85d0, #0a6fb0);
+    box-shadow: 0 6px 20px rgba(29, 161, 242, 0.4);
+}
+
+.btn-connect.linkedin {
+    background: linear-gradient(135deg, #0077b5, #005582);
+}
+
+.btn-connect.linkedin:hover {
+    background: linear-gradient(135deg, #005582, #004471);
+    box-shadow: 0 6px 20px rgba(0, 119, 181, 0.4);
+}
+
+.btn-disconnect {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1));
+    color: #ef4444;
+    border: 2px solid rgba(239, 68, 68, 0.3);
+}
+
+.btn-disconnect:hover {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.2));
+    border-color: #ef4444;
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3);
+    transform: translateY(-2px);
+}
+
+.btn-disconnect:active {
+    transform: translateY(0);
+}
+
+/* Preferences Section */
+.preferences-placeholder {
+    padding: 40px;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.03), rgba(236, 72, 153, 0.03));
+    border: 2px dashed rgba(168, 85, 247, 0.2);
+    border-radius: 16px;
+    color: var(--text-secondary);
+}
+
+.preferences-placeholder p {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .settings-page {
+        padding: 20px;
+    }
+
+    .settings-page h2 {
+        font-size: 28px;
+    }
+
+    .account-item {
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+    }
+
+    .account-info {
+        justify-content: flex-start;
+    }
+
+    .btn-connect,
+    .btn-disconnect {
+        width: 100%;
+        justify-content: center;
+    }
+}

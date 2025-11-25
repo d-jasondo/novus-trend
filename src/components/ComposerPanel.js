@@ -17,11 +17,48 @@ function ComposerPanel({ selectedTrend, onTweetPost, onTweetSchedule }) {
   const [mediaFiles, setMediaFiles] = useState([]);
   const [isGeneratingCaption, setIsGeneratingCaption] = useState(false);
   const [contentSource, setContentSource] = useState('manual'); // 'manual' or 'ai'
-  const maxCharacters = 280;
+  const [selectedPlatform, setSelectedPlatform] = useState('twitter'); // 'twitter' or 'linkedin'
+  const [linkedinUser, setLinkedinUser] = useState(null);
+  // Platform-specific character limits
+  const maxCharacters = selectedPlatform === 'linkedin' ? 3000 : 280;
+
+  useEffect(() => {
+    const linkedinTokens = localStorage.getItem('linkedinTokens');
+    if (linkedinTokens) {
+      const parsed = JSON.parse(linkedinTokens);
+      setLinkedinUser(parsed.name || 'LinkedIn User');
+    }
+
+    // Load saved draft on component mount
+    const savedDraft = localStorage.getItem('composerDraft');
+    if (savedDraft) {
+      const draft = JSON.parse(savedDraft);
+      setTweetContent(draft.content || '');
+      setHashtags(draft.hashtags || []);
+      setSelectedPlatform(draft.platform || 'twitter');
+      setMediaFiles(draft.mediaFiles || []);
+      setContentSource(draft.contentSource || 'manual');
+    }
+  }, []);
+
+  // Save draft to localStorage whenever content changes
+  useEffect(() => {
+    if (tweetContent || hashtags.length > 0) {
+      const draft = {
+        content: tweetContent,
+        hashtags,
+        platform: selectedPlatform,
+        mediaFiles: [], // Don't persist actual file objects
+        contentSource
+      };
+      localStorage.setItem('composerDraft', JSON.stringify(draft));
+    }
+  }, [tweetContent, hashtags, selectedPlatform, contentSource]);
 
   useEffect(() => {
     if (selectedTrend) {
-      setTweetContent(`Just discovered something amazing about ${selectedTrend.hashtag}! 🚀\n\n`);
+      // Don't set a generic template - let AI generate platform-appropriate content
+      setTweetContent(''); // Start with empty content
       setContentSource('manual');
       generateAISuggestions();
     }
@@ -35,16 +72,33 @@ function ComposerPanel({ selectedTrend, onTweetPost, onTweetSchedule }) {
     if (!selectedTrend) return;
     setIsLoadingAI(true);
     try {
-      const res = await axios.post(`${API_BASE}/tweets/generate`, {
-        prompt: selectedTrend.hashtag
-      });
-      // The backend returns { ok: true, text: "..." }
-      // We can parse hashtags from the text or just append the text to content
-      // For this UI, we expect hashtags list. 
-      // Let's try to extract hashtags from the generated text or just show a few generic ones + the text as suggestion
+      // Platform-specific prompts
+      const platformPrompts = {
+        twitter: `Write an engaging, creative tweet about the trending topic: ${selectedTrend.hashtag}. Make it contextual and interesting. Include relevant hashtags. IMPORTANT: Keep it under 250 characters to fit Twitter's limit.`,
+        linkedin: `Write an engaging, professional LinkedIn post about the trending topic: ${selectedTrend.hashtag}. Make it contextual, insightful, and longer-form (around 500-800 characters). Include relevant hashtags and provide value to professionals.`
+      };
 
-      // Simple extraction of hashtags from text
-      const text = res.data.text || "";
+      const res = await axios.post(`${API_BASE}/tweets/generate`, {
+        prompt: platformPrompts[selectedPlatform] || platformPrompts.twitter
+      });
+
+      let text = res.data.text || "";
+
+      // Clean up the text - remove common prefixes like "Category:", "Tweet:", etc.
+      text = text
+        .replace(/^Category:\s*[^\n]+\s*/i, '')  // Remove "Category: ..." line
+        .replace(/^Tweet:\s*/i, '')               // Remove "Tweet:" prefix  
+        .replace(/^Post:\s*/i, '')                // Remove "Post:" prefix
+        .replace(/^Content:\s*/i, '')             // Remove "Content:" prefix
+        .trim();
+
+      // Set the AI-generated text as the tweet content
+      if (text) {
+        setTweetContent(text);
+        setContentSource('ai');
+      }
+
+      // Extract hashtags from the generated text
       const extractedTags = text.match(/#[a-z0-9_]+/gi) || [];
       const uniqueTags = [...new Set(extractedTags)];
 
@@ -55,14 +109,11 @@ function ComposerPanel({ selectedTrend, onTweetPost, onTweetSchedule }) {
         setSuggestedHashtags(uniqueTags);
       }
 
-      // Optionally update content with the generated text if it's empty or user wants it
-      // For now, we just suggest hashtags as per original UI design, 
-      // but maybe we can set the content too if it's the initial load?
-      // Let's just stick to hashtags for now to match UI.
-
     } catch (err) {
       console.error("AI Gen failed", err);
-      setSuggestedHashtags(['#Error', '#TryAgain']);
+      // Fallback to a simple template if AI fails
+      setTweetContent(`Check out what's trending: ${selectedTrend.hashtag} 🔥`);
+      setSuggestedHashtags([selectedTrend.hashtag, '#Trending', '#News']);
     } finally {
       setIsLoadingAI(false);
     }
@@ -114,6 +165,8 @@ function ComposerPanel({ selectedTrend, onTweetPost, onTweetSchedule }) {
     setScheduleTime('09:00');
     setMediaFiles([]);
     setContentSource('manual');
+    // Clear saved draft
+    localStorage.removeItem('composerDraft');
   };
 
   const handleMediaUpload = (e) => {
@@ -177,15 +230,56 @@ function ComposerPanel({ selectedTrend, onTweetPost, onTweetSchedule }) {
         {selectedTrend && <span className="selected-trend">{selectedTrend.hashtag}</span>}
       </div>
 
+      <div className="platform-selector" style={{ padding: '0 20px 20px', display: 'flex', gap: '16px' }}>
+        <button
+          onClick={() => setSelectedPlatform('twitter')}
+          style={{
+            flex: 1,
+            padding: '12px 20px',
+            borderRadius: '12px',
+            border: selectedPlatform === 'twitter' ? 'none' : '2px solid rgba(0, 229, 255, 0.3)',
+            background: selectedPlatform === 'twitter' ? 'linear-gradient(135deg, #00E5FF, #8B5CF6)' : 'transparent',
+            color: selectedPlatform === 'twitter' ? 'white' : '#00E5FF',
+            cursor: 'pointer',
+            fontWeight: '700',
+            fontSize: '14px',
+            transition: 'all 0.3s ease',
+            boxShadow: selectedPlatform === 'twitter' ? '0 0 20px rgba(0, 229, 255, 0.5)' : 'none',
+            transform: selectedPlatform === 'twitter' ? 'translateY(-2px)' : 'none'
+          }}
+        >
+          🐦 Twitter
+        </button>
+        <button
+          onClick={() => setSelectedPlatform('linkedin')}
+          style={{
+            flex: 1,
+            padding: '12px 20px',
+            borderRadius: '12px',
+            border: selectedPlatform === 'linkedin' ? 'none' : '2px solid rgba(255, 20, 147, 0.3)',
+            background: selectedPlatform === 'linkedin' ? 'linear-gradient(135deg, #8B5CF6, #FF1493)' : 'transparent',
+            color: selectedPlatform === 'linkedin' ? 'white' : '#FF1493',
+            cursor: 'pointer',
+            fontWeight: '700',
+            fontSize: '14px',
+            transition: 'all 0.3s ease',
+            boxShadow: selectedPlatform === 'linkedin' ? '0 0 20px rgba(255, 20, 147, 0.5)' : 'none',
+            transform: selectedPlatform === 'linkedin' ? 'translateY(-2px)' : 'none'
+          }}
+        >
+          💼 LinkedIn
+        </button>
+      </div>
+
       <div className="panel-body scrollable">
         {/* Tweet Composer */}
         <div className="composer-box card-elevated">
           <textarea
             className={`tweet-input ${contentSource === 'ai' ? 'ai-generated' : ''}`}
-            placeholder="Share your thoughts about this trend..."
+            placeholder={selectedPlatform === 'linkedin' ? 'Share your professional insights...' : 'Share your thoughts about this trend...'}
             value={tweetContent}
             onChange={(e) => { setTweetContent(e.target.value); setContentSource('manual'); }}
-            maxLength={280}
+            maxLength={maxCharacters}
           />
 
           <div className="composer-footer">

@@ -15,9 +15,13 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 const authRouter = require('./routes/auth');
 const tweetsRouter = require('./routes/tweets');
+const linkedinAuthRouter = require('./routes/linkedin-auth');
+const linkedinRouter = require('./routes/linkedin');
 
 app.use('/auth', authRouter);
 app.use('/tweets', tweetsRouter);
+app.use('/auth/linkedin', linkedinAuthRouter);
+app.use('/linkedin', linkedinRouter);
 
 // simple health
 app.get('/', (req, res) => res.json({ ok: true, env: process.env.NODE_ENV || 'development' }));

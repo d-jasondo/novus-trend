@@ -59,125 +59,97 @@ function Dashboard({ onTweetPosted, onTweetScheduled, chatMessages, onChatUpdate
           alert('Please sign in with Twitter first!');
           return;
         }
-        accessToken = JSON.parse(tokensData).accessToken;
-      }
+        const newTweet = {
+          id: Date.now(),
+          content: tweet.content,
+          hashtags: tweet.hashtags,
+          timestamp: new Date(),
+          platform: platform, // Store platform
+          engagements: {
+            likes: 0,
+            retweets: 0,
+            replies: 0,
+          },
+          status: 'posted',
+        };
 
-      // Convert media files to base64 if present
-      let mediaData = [];
-      if (tweet.media && tweet.media.length > 0) {
-        for (const file of tweet.media) {
-          const base64 = await new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result);
-            reader.readAsDataURL(file);
-          });
-          mediaData.push({
-            data: base64,
-            mimeType: file.type
-          });
+        onTweetPosted(newTweet);
+        alert(`${platform === 'linkedin' ? 'LinkedIn post' : 'Tweet'} posted successfully!`);
+
+      } catch (err) {
+        console.error('Post failed', err);
+        alert(`Failed to post: ${err.response?.data?.error || err.message}`);
+      }
+    };
+
+    const handleTweetSchedule = async (tweet, scheduleTime) => {
+      try {
+        // Get real access token from localStorage
+        const tokensData = localStorage.getItem('twitterTokens');
+        if (!tokensData) {
+          alert('Please sign in with Twitter first!');
+          return;
         }
+        const { accessToken } = JSON.parse(tokensData);
+
+        // Call backend to schedule
+        await axios.post(`${API_BASE}/tweets/schedule`, {
+          text: tweet.content,
+          accessToken,
+          when: scheduleTime.toISOString()
+        });
+
+        const newTweet = {
+          id: Date.now(),
+          content: tweet.content,
+          hashtags: tweet.hashtags,
+          scheduledTime: scheduleTime,
+          status: 'scheduled',
+        };
+
+        onTweetScheduled(newTweet);
+        alert('Tweet scheduled!');
+      } catch (err) {
+        console.error('Schedule failed', err);
+        alert(`Failed to schedule tweet: ${err.response?.data?.error || err.message}`);
       }
+    };
 
-      // Post to backend based on platform
-      const endpoint = platform === 'linkedin' ? `${API_BASE}/linkedin/post` : `${API_BASE}/tweets/post`;
+    return (
+      <div className="dashboard-container">
+        <Navbar region={region} setRegion={setRegion} />
+        <div className="dashboard-content">
+          <div className="dashboard-panels">
+            {/* Left Panel - Trending Hashtags */}
+            <div className="panel panel-left">
+              <TrendingPanel
+                trends={trends}
+                onTrendSelect={handleTrendSelect}
+                selectedTrend={selectedTrend}
+                region={region}
+              />
+            </div>
 
-      const res = await axios.post(endpoint, {
-        text: tweet.content,
-        accessToken,
-        media: mediaData
-      });
+            {/* Center Panel - Tweet Composer */}
+            <div className="panel panel-center">
+              <ComposerPanel
+                selectedTrend={selectedTrend}
+                onTweetPost={handleTweetPost}
+                onTweetSchedule={handleTweetSchedule}
+              />
+            </div>
 
-      const newTweet = {
-        id: Date.now(),
-        content: tweet.content,
-        hashtags: tweet.hashtags,
-        timestamp: new Date(),
-        platform: platform, // Store platform
-        engagements: {
-          likes: 0,
-          retweets: 0,
-          replies: 0,
-        },
-        status: 'posted',
-      };
-
-      onTweetPosted(newTweet);
-      alert(`${platform === 'linkedin' ? 'LinkedIn post' : 'Tweet'} posted successfully!`);
-
-    } catch (err) {
-      console.error('Post failed', err);
-      alert(`Failed to post: ${err.response?.data?.error || err.message}`);
-    }
-  };
-
-  const handleTweetSchedule = async (tweet, scheduleTime) => {
-    try {
-      // Get real access token from localStorage
-      const tokensData = localStorage.getItem('twitterTokens');
-      if (!tokensData) {
-        alert('Please sign in with Twitter first!');
-        return;
-      }
-      const { accessToken } = JSON.parse(tokensData);
-
-      // Call backend to schedule
-      await axios.post(`${API_BASE}/tweets/schedule`, {
-        text: tweet.content,
-        accessToken,
-        when: scheduleTime.toISOString()
-      });
-
-      const newTweet = {
-        id: Date.now(),
-        content: tweet.content,
-        hashtags: tweet.hashtags,
-        scheduledTime: scheduleTime,
-        status: 'scheduled',
-      };
-
-      onTweetScheduled(newTweet);
-      alert('Tweet scheduled!');
-    } catch (err) {
-      console.error('Schedule failed', err);
-      alert(`Failed to schedule tweet: ${err.response?.data?.error || err.message}`);
-    }
-  };
-
-  return (
-    <div className="dashboard-container">
-      <Navbar region={region} setRegion={setRegion} />
-      <div className="dashboard-content">
-        <div className="dashboard-panels">
-          {/* Left Panel - Trending Hashtags */}
-          <div className="panel panel-left">
-            <TrendingPanel
-              trends={trends}
-              onTrendSelect={handleTrendSelect}
-              selectedTrend={selectedTrend}
-              region={region}
-            />
-          </div>
-
-          {/* Center Panel - Tweet Composer */}
-          <div className="panel panel-center">
-            <ComposerPanel
-              selectedTrend={selectedTrend}
-              onTweetPost={handleTweetPost}
-              onTweetSchedule={handleTweetSchedule}
-            />
-          </div>
-
-          {/* Right Panel - Chatbot */}
-          <div className="panel panel-right">
-            <ChatbotPanel
-              messages={chatMessages}
-              onMessagesUpdate={onChatUpdate}
-            />
+            {/* Right Panel - Chatbot */}
+            <div className="panel panel-right">
+              <ChatbotPanel
+                messages={chatMessages}
+                onMessagesUpdate={onChatUpdate}
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
-export default Dashboard;
+  export default Dashboard;

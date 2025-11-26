@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaTwitter, FaLinkedin, FaHeart, FaRetweet, FaComment, FaChartLine } from 'react-icons/fa';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import './AnalyticsPanel.css';
 
 function AnalyticsPanel({ postedTweets }) {
@@ -20,6 +21,25 @@ function AnalyticsPanel({ postedTweets }) {
         { label: 'Total Engagement', value: totalEngagement, icon: FaHeart, color: 'pink', change: '+24%' },
         { label: 'Engagement Rate', value: `${engagementRate}%`, icon: FaRetweet, color: 'purple', change: '+8%' },
         { label: 'Avg. Per Post', value: totalPosts > 0 ? Math.round(totalEngagement / totalPosts) : 0, icon: FaComment, color: 'gradient', change: '+15%' },
+    ];
+
+    // Prepare chart data (reverse to show oldest to newest)
+    const chartData = [...postedTweets].reverse().map((tweet, index) => ({
+        name: `Post ${index + 1}`,
+        engagement: (tweet.likes || 0) + (tweet.retweets || 0) + (tweet.replies || 0),
+        likes: tweet.likes || 0,
+        shares: tweet.retweets || 0
+    }));
+
+    // If no data, provide some dummy data for visualization
+    const displayData = chartData.length > 0 ? chartData : [
+        { name: 'Mon', engagement: 12, likes: 10, shares: 2 },
+        { name: 'Tue', engagement: 19, likes: 15, shares: 4 },
+        { name: 'Wed', engagement: 3, likes: 2, shares: 1 },
+        { name: 'Thu', engagement: 25, likes: 20, shares: 5 },
+        { name: 'Fri', engagement: 32, likes: 28, shares: 4 },
+        { name: 'Sat', engagement: 20, likes: 18, shares: 2 },
+        { name: 'Sun', engagement: 45, likes: 40, shares: 5 },
     ];
 
     return (
@@ -47,6 +67,31 @@ function AnalyticsPanel({ postedTweets }) {
                             </div>
                         );
                     })}
+                </div>
+
+                {/* Engagement Chart */}
+                <div className="analytics-section">
+                    <h3 className="section-title">Engagement Trends</h3>
+                    <div className="chart-container" style={{ height: '300px', width: '100%', background: 'rgba(255, 255, 255, 0.05)', borderRadius: '16px', padding: '20px' }}>
+                        <ResponsiveContainer width="100%" height="100%">
+                            <AreaChart data={displayData}>
+                                <defs>
+                                    <linearGradient id="colorEngagement" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="5%" stopColor="#00E5FF" stopOpacity={0.8} />
+                                        <stop offset="95%" stopColor="#00E5FF" stopOpacity={0} />
+                                    </linearGradient>
+                                </defs>
+                                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                                <XAxis dataKey="name" stroke="#888" />
+                                <YAxis stroke="#888" />
+                                <Tooltip
+                                    contentStyle={{ backgroundColor: '#1a1a2e', borderColor: '#00E5FF', borderRadius: '8px' }}
+                                    itemStyle={{ color: '#fff' }}
+                                />
+                                <Area type="monotone" dataKey="engagement" stroke="#00E5FF" fillOpacity={1} fill="url(#colorEngagement)" />
+                            </AreaChart>
+                        </ResponsiveContainer>
+                    </div>
                 </div>
 
                 {/* Platform Breakdown */}

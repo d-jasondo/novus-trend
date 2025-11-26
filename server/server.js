@@ -17,11 +17,13 @@ const authRouter = require('./routes/auth');
 const tweetsRouter = require('./routes/tweets');
 const linkedinAuthRouter = require('./routes/linkedin-auth');
 const linkedinRouter = require('./routes/linkedin');
+const chatRouter = require('./routes/chat');
 
 app.use('/auth', authRouter);
 app.use('/tweets', tweetsRouter);
 app.use('/auth/linkedin', linkedinAuthRouter);
 app.use('/linkedin', linkedinRouter);
+app.use('/chat', chatRouter);
 
 // simple health
 app.get('/', (req, res) => res.json({ ok: true, env: process.env.NODE_ENV || 'development' }));

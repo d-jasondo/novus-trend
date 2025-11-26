@@ -137,6 +137,7 @@ function ComposerPanel({ selectedTrend, onTweetPost, onTweetSchedule }) {
       content: tweetContent,
       hashtags: hashtags,
       media: mediaFiles.map(m => m.file), // Include media files
+      platform: selectedPlatform, // Add platform selection
     };
 
     onTweetPost(tweet);
@@ -149,6 +150,7 @@ function ComposerPanel({ selectedTrend, onTweetPost, onTweetSchedule }) {
     const tweet = {
       content: tweetContent,
       hashtags: hashtags,
+      platform: selectedPlatform, // Add platform selection
     };
 
     const scheduledTime = new Date(`${scheduleDate}T${scheduleTime}`);

@@ -4,21 +4,17 @@ import './Dashboard.css';
 import Navbar from './Navbar';
 import TrendingPanel from './TrendingPanel';
 import ComposerPanel from './ComposerPanel';
-import PostedPanel from './PostedPanel';
+import ChatbotPanel from './ChatbotPanel';
 
 const API_BASE = 'http://localhost:4000';
 
-function Dashboard() {
+function Dashboard({ onTweetPosted, onTweetScheduled, chatMessages, onChatUpdate }) {
   const [trends, setTrends] = useState([]);
   const [selectedTrend, setSelectedTrend] = useState(null);
-  const [postedTweets, setPostedTweets] = useState([]);
-  const [scheduledTweets, setScheduledTweets] = useState([]);
-  const [activeTab, setActiveTab] = useState('posted');
   const [region, setRegion] = useState('Global');
 
   useEffect(() => {
     fetchTrends();
-    fetchScheduled();
 
     // Auto-refresh trends every 30 seconds
     const trendsInterval = setInterval(() => {
@@ -38,24 +34,6 @@ function Dashboard() {
       setTrends(res.data);
     } catch (err) {
       console.error('Failed to fetch trends', err);
-    }
-  };
-
-  const fetchScheduled = async () => {
-    try {
-      const res = await axios.get(`${API_BASE}/tweets/scheduled`);
-      // Transform to match UI model if needed, or just use as is
-      // The UI expects { id, content, hashtags, scheduledTime, status }
-      const mapped = res.data.map(t => ({
-        ...t,
-        content: t.text, // backend uses 'text', frontend uses 'content'
-        scheduledTime: t.when,
-        status: 'scheduled',
-        hashtags: [] // backend doesn't store hashtags separately in this simple demo
-      }));
-      setScheduledTweets(mapped);
-    } catch (err) {
-      console.error('Failed to fetch scheduled tweets', err);
     }
   };
 
@@ -122,7 +100,8 @@ function Dashboard() {
         },
         status: 'posted',
       };
-      setPostedTweets([newTweet, ...postedTweets]);
+
+      onTweetPosted(newTweet);
       alert(`${platform === 'linkedin' ? 'LinkedIn post' : 'Tweet'} posted successfully!`);
 
     } catch (err) {
@@ -155,19 +134,12 @@ function Dashboard() {
         scheduledTime: scheduleTime,
         status: 'scheduled',
       };
-      setScheduledTweets([newTweet, ...scheduledTweets]);
+
+      onTweetScheduled(newTweet);
       alert('Tweet scheduled!');
     } catch (err) {
       console.error('Schedule failed', err);
       alert(`Failed to schedule tweet: ${err.response?.data?.error || err.message}`);
-    }
-  };
-
-  const handleDeleteTweet = (id, type) => {
-    if (type === 'scheduled') {
-      setScheduledTweets(scheduledTweets.filter(tweet => tweet.id !== id));
-    } else {
-      setPostedTweets(postedTweets.filter(tweet => tweet.id !== id));
     }
   };
 
@@ -195,14 +167,11 @@ function Dashboard() {
             />
           </div>
 
-          {/* Right Panel - Posted & Scheduled */}
+          {/* Right Panel - Chatbot */}
           <div className="panel panel-right">
-            <PostedPanel
-              postedTweets={postedTweets}
-              scheduledTweets={scheduledTweets}
-              activeTab={activeTab}
-              setActiveTab={setActiveTab}
-              onDeleteTweet={handleDeleteTweet}
+            <ChatbotPanel
+              messages={chatMessages}
+              onMessagesUpdate={onChatUpdate}
             />
           </div>
         </div>

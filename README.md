@@ -18,20 +18,22 @@ A Trend Intelligence & Action Platform that democratizes content creation by agg
 
 ### 🤖 AI-Powered Content Generation
 - **Smart Suggestions**: Gemini AI generates tweet drafts based on selected trends
+- **AI Chatbot Assistant**: Conversational AI to brainstorm ideas and strategies
 - **Image Captions**: Upload images and auto-generate engaging captions
 - **Context-Aware**: AI analyzes trending topics to create relevant, engaging content
 
 ### 📝 Content Composer
-- **One-Click Posting**: Post directly to Twitter/X with OAuth 2.0
-- **Media Upload**: Attach images/videos to tweets
-- **Schedule Tweets**: Plan content for optimal posting times
+- **Multi-Platform Posting**: Post to Twitter/X and LinkedIn
+- **Media Upload**: Attach images/videos to posts
+- **Schedule Posts**: Plan content for optimal posting times
 - **Hashtag Management**: AI-suggested hashtags with easy selection
 
 ### 📊 Content Dashboard
-- **Posted Tweets**: Track your published content
+- **Analytics Charts**: Visualize engagement trends with interactive charts
+- **Posted Content**: Track your published tweets and LinkedIn posts
 - **Scheduled Queue**: Manage upcoming posts
 - **Engagement Tracking**: Monitor likes, retweets, and replies
-- **Multi-Account Support**: Switch between Twitter accounts seamlessly
+- **Multi-Account Support**: Switch between Twitter and LinkedIn accounts
 
 ## 🎨 Custom Dark Theme
 Stunning dark mode with a carefully crafted color palette:
@@ -47,12 +49,14 @@ Stunning dark mode with a carefully crafted color palette:
 - **React 18** - Modern UI framework
 - **Axios** - HTTP client
 - **React Icons** - Icon library
+- **Recharts** - Data visualization
 - **Custom CSS** - Responsive dark theme
 
 ### Backend
 - **Node.js & Express** - REST API server
 - **Twitter API v2** - OAuth 2.0 & tweet posting
-- **Google Gemini AI** - Content generation
+- **LinkedIn API** - OAuth 2.0 & posting
+- **Google Gemini AI** - Content generation & Chatbot
 - **node-cron** - Tweet scheduling
 - **RapidAPI** - Trend data aggregation
 
@@ -61,6 +65,7 @@ Stunning dark mode with a carefully crafted color palette:
 ### Prerequisites
 - Node.js 20.x or higher
 - Twitter Developer Account (API v2 credentials)
+- LinkedIn Developer App (Client ID & Secret)
 - Google AI Studio API Key (Gemini)
 - RapidAPI Key (Twitter Trends API)
 
@@ -80,6 +85,9 @@ cat > .env << EOF
 TWITTER_CLIENT_ID=your_twitter_client_id
 TWITTER_CLIENT_SECRET=your_twitter_client_secret
 TWITTER_CALLBACK_URL=http://localhost:3000/auth/callback
+LINKEDIN_CLIENT_ID=your_linkedin_client_id
+LINKEDIN_CLIENT_SECRET=your_linkedin_client_secret
+LINKEDIN_CALLBACK_URL=http://localhost:3000/auth/linkedin/callback
 GEMINI_API_KEY=your_gemini_api_key
 RAPIDAPI_KEY=your_rapidapi_key
 PORT=4000
@@ -109,6 +117,13 @@ The app will open at `http://localhost:3000`
 4. Required scopes: `tweet.read`, `tweet.write`, `users.read`, `offline.access`, `tweet.moderate.write`
 5. Copy Client ID and Client Secret
 
+### LinkedIn Developer Portal
+1. Go to [LinkedIn Developers](https://www.linkedin.com/developers/)
+2. Create a new app
+3. Add callback URL: `http://localhost:3000/auth/linkedin/callback`
+4. Request `w_member_social`, `r_liteprofile`, `r_emailaddress` permissions
+5. Copy Client ID and Client Secret
+
 ### Google AI Studio
 1. Visit [Google AI Studio](https://aistudio.google.com/app/apikey)
 2. Create a new API key
@@ -120,8 +135,8 @@ The app will open at `http://localhost:3000`
 
 ## 🚀 Usage
 
-### 1. Login with Twitter
-Click "Sign in with Twitter" to authenticate via OAuth 2.0.
+### 1. Login
+Connect your Twitter and LinkedIn accounts via the Settings page or Composer.
 
 ### 2. Discover Trends
 Browse trending topics categorized by:
@@ -135,10 +150,11 @@ Browse trending topics categorized by:
 - Click a trending topic to select it
 - AI generates suggested hashtags and content
 - Upload images for AI-powered captions
-- Customize your tweet
+- Customize your post
+- **AI Chatbot**: Ask the assistant for ideas or strategies
 
 ### 4. Post or Schedule
-- **Post Now**: Immediately publish to Twitter
+- **Post Now**: Immediately publish to Twitter or LinkedIn
 - **Schedule**: Set a future date/time for automatic posting
 
 ## 📁 Project Structure
@@ -147,6 +163,8 @@ novus-trend/
 ├── server/                 # Backend (Node.js/Express)
 │   ├── routes/
 │   │   ├── auth.js        # Twitter OAuth 2.0
+│   │   ├── linkedin.js    # LinkedIn OAuth & Posting
+│   │   ├── chat.js        # AI Chatbot
 │   │   └── tweets.js      # Tweet operations & trends
 │   ├── utils/
 │   │   └── gemini.js      # AI content generation
@@ -159,8 +177,10 @@ novus-trend/
 │   │   ├── Dashboard.js   # Main app layout
 │   │   ├── Navbar.js      # Top navigation
 │   │   ├── TrendingPanel.js    # Trends display
-│   │   ├── ComposerPanel.js    # Tweet composer
-│   │   ├── PostedPanel.js      # Posted & scheduled tweets
+│   │   ├── ComposerPanel.js    # Multi-platform composer
+│   │   ├── ChatbotPanel.js     # AI Assistant
+│   │   ├── AnalyticsPanel.js   # Charts & Stats
+│   │   ├── ActivityPage.js     # Posted/Scheduled view
 │   │   └── OAuthCallback.js    # OAuth handler
 │   ├── App.js
 │   └── index.js
@@ -178,16 +198,16 @@ novus-trend/
 - [x] Tweet scheduling
 - [x] Custom dark theme
 
-### Phase 2: Intelligence (In Progress)
+### Phase 2: Intelligence & Expansion ✅
+- [x] LinkedIn Integration
+- [x] AI Chatbot Assistant
+- [x] Analytics Dashboard with Charts
 - [ ] Smart Context: AI explains *why* topics are trending
 - [ ] Multi-source trends (Google, YouTube, TikTok)
-- [ ] Sentiment analysis for trends
-- [ ] One-click multi-format generation (Twitter, LinkedIn, Instagram)
 
 ### Phase 3: Growth
-- [ ] Analytics dashboard
-- [ ] Content performance tracking
-- [ ] A/B testing for tweets
+- [ ] Advanced Analytics (Historical data)
+- [ ] A/B testing for posts
 - [ ] Competitor analysis
 - [ ] Auto-posting based on optimal times
 

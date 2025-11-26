@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaHome, FaChartLine, FaCalendarAlt, FaCog, FaUser } from 'react-icons/fa';
+import { FaHome, FaChartLine, FaCalendarAlt, FaCog, FaUser, FaList } from 'react-icons/fa';
 import './Sidebar.css';
 
 function Sidebar({ currentView, onViewChange }) {
@@ -24,6 +24,7 @@ function Sidebar({ currentView, onViewChange }) {
 
     const menuItems = [
         { id: 'home', icon: FaHome, label: 'Home', badge: null },
+        { id: 'activity', icon: FaList, label: 'Activity', badge: null },
         { id: 'analytics', icon: FaChartLine, label: 'Analytics', badge: null },
         { id: 'calendar', icon: FaCalendarAlt, label: 'Calendar', badge: 'Soon' },
         { id: 'settings', icon: FaCog, label: 'Settings', badge: null },
